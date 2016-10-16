@@ -1,9 +1,11 @@
 mackerel-plugin-fastly-billing
 ==============================
 
+[![Build Status](https://img.shields.io/circleci/project/masutaka/mackerel-plugin-fastly-billing/master.svg?maxAge=2592000?style=flat-square)][circleci]
 [![License](https://img.shields.io/github/license/masutaka/mackerel-plugin-fastly-billing.svg?maxAge=2592000)][license]
 [![GoDoc](https://godoc.org/github.com/masutaka/mackerel-plugin-fastly-billing?status.svg)][godoc]
 
+[circleci]: https://circleci.com/gh/masutaka/mackerel-plugin-fastly-billing
 [license]: https://github.com/masutaka/mackerel-plugin-fastly-billing/blob/master/LICENSE.txt
 [godoc]: https://godoc.org/github.com/masutaka/mackerel-plugin-fastly-billing
 
