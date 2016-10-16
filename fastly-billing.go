@@ -5,6 +5,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -16,6 +17,20 @@ import (
 type FastlyBillingPlugin struct {
 	apiKey string
 	prefix string
+}
+
+func main() {
+	optAPIKey := flag.String("api-key", "", "Fastly API Key")
+	optMetricKeyPrefix := flag.String("metric-key-prefix", "fastly", "Metric Key Prefix")
+	flag.Parse()
+
+	var fastlyBilling FastlyBillingPlugin
+
+	fastlyBilling.apiKey = *optAPIKey
+	fastlyBilling.prefix = *optMetricKeyPrefix
+
+	helper := mp.NewMackerelPlugin(fastlyBilling)
+	helper.Run()
 }
 
 // FetchMetrics interface for PluginWithPrefix
@@ -50,7 +65,7 @@ func thisMonthTotalCost(apiKey string) (float64, error) {
 		return 0.0, errors.New(resp.Status)
 	}
 
-	return pickTotalCost(resp)
+	return pickTotalCost(resp.Body)
 }
 
 func fastlyEndPoint() string {
@@ -62,7 +77,7 @@ func fastlyEndPoint() string {
 		now.Format("2006"), now.Format("01"))
 }
 
-func pickTotalCost(resp *http.Response) (float64, error) {
+func pickTotalCost(respBody io.Reader) (float64, error) {
 	type Total struct {
 		Cost float64
 	}
@@ -73,7 +88,7 @@ func pickTotalCost(resp *http.Response) (float64, error) {
 
 	var billing Billing
 
-	decoder := json.NewDecoder(resp.Body)
+	decoder := json.NewDecoder(respBody)
 	err := decoder.Decode(&billing)
 
 	if err != nil {
@@ -107,18 +122,4 @@ func (p FastlyBillingPlugin) MetricKeyPrefix() string {
 		p.prefix = "fastly"
 	}
 	return p.prefix
-}
-
-func main() {
-	optAPIKey := flag.String("api-key", "", "Fastly API Key")
-	optMetricKeyPrefix := flag.String("metric-key-prefix", "fastly", "Metric Key Prefix")
-	flag.Parse()
-
-	var fastlyBilling FastlyBillingPlugin
-
-	fastlyBilling.apiKey = *optAPIKey
-	fastlyBilling.prefix = *optMetricKeyPrefix
-
-	helper := mp.NewMackerelPlugin(fastlyBilling)
-	helper.Run()
 }
