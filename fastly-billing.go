@@ -13,12 +13,6 @@ import (
 	mp "github.com/mackerelio/go-mackerel-plugin-helper"
 )
 
-// FastlyBillingPlugin mackerel plugin for Fastly Billing
-type FastlyBillingPlugin struct {
-	apiKey string
-	prefix string
-}
-
 func main() {
 	optAPIKey := flag.String("api-key", "", "Fastly API Key")
 	optMetricKeyPrefix := flag.String("metric-key-prefix", "fastly", "Metric Key Prefix")
@@ -31,6 +25,12 @@ func main() {
 
 	helper := mp.NewMackerelPlugin(fastlyBilling)
 	helper.Run()
+}
+
+// FastlyBillingPlugin mackerel plugin for Fastly Billing
+type FastlyBillingPlugin struct {
+	apiKey string
+	prefix string
 }
 
 // FetchMetrics interface for PluginWithPrefix
