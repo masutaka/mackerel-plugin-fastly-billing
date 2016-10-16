@@ -48,7 +48,7 @@ func (p FastlyBillingPlugin) FetchMetrics() (map[string]interface{}, error) {
 func thisMonthTotalCost(apiKey string) (float64, error) {
 	client := &http.Client{Timeout: time.Duration(5) * time.Second}
 
-	req, err := http.NewRequest("GET", fastlyEndPoint(), nil)
+	req, err := http.NewRequest("GET", fastlyEndPoint(time.Now()), nil)
 	if err != nil {
 		return 0.0, err
 	}
@@ -68,9 +68,7 @@ func thisMonthTotalCost(apiKey string) (float64, error) {
 	return pickTotalCost(resp.Body)
 }
 
-func fastlyEndPoint() string {
-	now := time.Now()
-
+func fastlyEndPoint(now time.Time) string {
 	// See https://docs.fastly.com/api/account#billing
 	return fmt.Sprintf("https://api.fastly.com/billing/year/%s/month/%s",
 		// See https://golang.org/pkg/time/#pkg-constants
@@ -79,11 +77,11 @@ func fastlyEndPoint() string {
 
 func pickTotalCost(respBody io.Reader) (float64, error) {
 	type Total struct {
-		Cost float64
+		Cost *float64
 	}
 
 	type Billing struct {
-		Total Total `json:"total"`
+		Total *Total `json:"total"`
 	}
 
 	var billing Billing
@@ -95,7 +93,15 @@ func pickTotalCost(respBody io.Reader) (float64, error) {
 		return 0.0, err
 	}
 
-	return billing.Total.Cost, nil
+	if billing.Total == nil {
+		return 0.0, errors.New("`total` Not Found")
+	}
+
+	if billing.Total.Cost == nil {
+		return 0.0, errors.New("`total.cost` Not Found")
+	}
+
+	return *billing.Total.Cost, nil
 }
 
 // GraphDefinition interface for PluginWithPrefix
