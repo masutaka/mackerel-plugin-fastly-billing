@@ -1,5 +1,6 @@
-mackerel-plugin-fastly-billing
-==============================
+# :no_entry_sign: This plugin cannot run because it doesn't support [Fastly Billing API v2](https://docs.fastly.com/api/account#billing).
+
+# mackerel-plugin-fastly-billing
 
 [![Build Status](https://img.shields.io/circleci/project/masutaka/mackerel-plugin-fastly-billing/master.svg?maxAge=2592000?style=flat-square)][circleci]
 [![License](https://img.shields.io/github/license/masutaka/mackerel-plugin-fastly-billing.svg?maxAge=2592000)][license]
@@ -9,18 +10,15 @@ mackerel-plugin-fastly-billing
 [license]: https://github.com/masutaka/mackerel-plugin-fastly-billing/blob/master/LICENSE.txt
 [godoc]: https://godoc.org/github.com/masutaka/mackerel-plugin-fastly-billing
 
-Description
------------
+## Description
 
 [Fastly](https://www.fastly.com/) billing custom metrics plugin for mackerel.io agent.
 
-Synopsis
---------
+## Synopsis
 
     mackerel-plugin-fastly-billing -api-key=<Fastly API Key>
 
-Example of mackerel-agent.conf
-------------------------------
+## Example of mackerel-agent.conf
 
     [plugin.metrics.fastly_billing]
     command = "/path/to/mackerel-plugin-fastly-billing -api-key=<Fastly API Key>"
