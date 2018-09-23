@@ -2,7 +2,7 @@
 
 # mackerel-plugin-fastly-billing
 
-[![License](https://img.shields.io/github/license/masutaka/mackerel-plugin-fastly-billing.svg?maxAge=2592000)][license]
+[![License](https://img.shields.io/github/license/masutaka/mackerel-plugin-fastly-billing.svg)][license]
 [![GoDoc](https://godoc.org/github.com/masutaka/mackerel-plugin-fastly-billing?status.svg)][godoc]
 
 [license]: https://github.com/masutaka/mackerel-plugin-fastly-billing/blob/master/LICENSE.txt
